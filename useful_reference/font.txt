@@ -2,6 +2,7 @@
 - Ink Free
 - Consolas
 - Bahnschrift Light
+- Fixedsys
 
 # All
 System

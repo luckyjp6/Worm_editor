@@ -10,9 +10,13 @@ class Root_window():
         self.default_font = ('Consolas', 16)
 
         # default setting
-        style = ttkb.Style(theme='minty') # minty, vapor, morph
-        self.root = style.master
+        self.style = ttkb.Style(theme='minty') # minty, vapor, morph
+        self.root = self.style.master
+        # self.root = tk.Tk()
         self.root.title('Worm Simple Text Editor')
         self.root.iconbitmap('D:/repo/text_editor_python/img_src/icon.ico')
         self.root.geometry(f'{self.default_weight}x{self.default_height}+{self.default_x_pad}+{self.default_y_pad}') # TODO: full-screen or 
 
+    def set_theme(self, theme):
+        print(theme)
+        self.style.theme_use(theme)

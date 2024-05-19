@@ -3,10 +3,12 @@ from tkinter import ttk, filedialog
 from file import File, File_status
 
 class File_manager():
-    def __init__(self, parent):
+    def __init__(self, parent, default_font):
         self.note_book = ttk.Notebook(parent)
         self.note_book.pack(expand=True, fill='both')
 
+        self.default_font = default_font
+        self.now_font = default_font
         self.default_file_name = 'new file'
         self.files = []
         self.new_file_counter_max = 0
@@ -69,7 +71,7 @@ class File_manager():
             self.new_file_counter_max += 1
         
         # add display
-        self.note_book.add(new_f.text_area, text=display_name)
+        self.note_book.add(new_f.frame, text=display_name)
         # display
         self.note_book.select(len(self.files))
         # store object
@@ -119,9 +121,29 @@ class File_manager():
         for f in wait_for_delete:
             self.files.remove(f)
 
-    def set_font(self, font):
+    def set_font(self, font:tuple):
+        self.update_font(font[0], font[1])
+    def set_font_family(self, family=str):
+        self.update_font(family, self.now_font[1])
+    def set_font_size(self, size:int):
+        self.update_font(self.now_font[0], size)
+    def update_font(self, family, size):        
         for f in self.files:
             try:
-                f.text_area.configure(font=font)
+                f.text_area.configure(font=(family, size))
+                self.now_font = (family, size)
             except tk.TclError:
                 pass
+    def increase_font_size(self, event=None):
+        size = self.now_font[1]
+        delta = (int)(size/10)
+        if (size + delta)< 400: size += delta
+        self.update_font(self.now_font[0], size)
+    def decrease_font_size(self, event=None):
+        size = self.now_font[1]
+        delta = (int)(size/10)
+        if (size - delta) > 8: size -= delta
+        self.update_font(self.now_font[0], size)
+    def increase_or_decrease_font_size(self, event=None):
+        if event.delta > 0: self.increase_font_size()
+        else: self.decrease_font_size()
